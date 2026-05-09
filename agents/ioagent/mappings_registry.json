@@ -1,0 +1,28 @@
+{
+    "default_mappings": {},
+    "format_records": {
+        "PT ADA Asia Indonesia": {
+            "start_date": [
+                "Flight_Start__c"
+            ],
+            "end_date": [
+                "Flight_End__c"
+            ],
+            "budget": [
+                "QuoteLineItem.TotalPrice"
+            ],
+            "name": [
+                "Product2.Name"
+            ],
+            "rate": [
+                "UnitPrice"
+            ]
+        }
+    },
+    "soql_queries": {
+        "PT ADA Asia Indonesia": {
+            "Account": "SELECT Id, Account.Id, Account.Name, Account.BillingStreet, Account.BillingCity, Account.BillingCountry FROM Opportunity WHERE Id = '{opp_id}'",
+            "QuoteLineItem": "SELECT Id, Product2.Name, QuoteId, Quote.Name, ListPrice, TotalPrice, Quantity, PricebookEntry.Pricebook2Id, PricebookEntryId, Flight_Start__c, Flight_End__c, Product2Id\nFROM QuoteLineItem\nWHERE Quote.OpportunityId = '{opp_id}' AND Quote.IsSyncing = true"
+        }
+    }
+}
