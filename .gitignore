@@ -75,3 +75,6 @@ dmypy.json
 
 # Pyre type checker
 .pyre/agents/ioagent/sessions/
+
+# lwc
+lwc2.0/chatbotLauncher/
