@@ -1,0 +1,217 @@
+<template>
+    <div class="chatbot-container">
+        <div class="chatbot-icon" onclick={togglePopup}>
+           💬 
+        </div>
+
+        <template if:true={showPopup}>
+
+            <template if:true={isChatExpanded}>
+                <div class="chatbot-popup">
+                    <div class="popup-header">
+                        <span>PacePal</span>
+                        <button class="close-button" onclick={togglePopup}>×</button>
+                    </div>
+
+                    <div class="slds-grid" style="flex: 1; min-height: 0;">
+
+                        <div class="popup-body slds-col slds-size_4-of-12">
+                            <template for:each={chatMessages} for:item="message">
+                                <div key={message.id} class="chat-message">
+                                    <span>{message.text}</span>
+                                </div>
+                            </template>
+
+                            <div class="slds-card_footer">
+                                <!-- 
+                                <div class="slds-align-bottom">
+                                    <img 
+                                        src={iconUrl} 
+                                        alt="Toggle Feature" 
+                                        class="png-icon" 
+                                        onclick={handleIconClick}
+                                    />
+                                </div>
+                                -->
+                                <div class="custom-input-box slds-col slds-size_12-of-12">
+                                    <template if:true={selectedFile}>
+                                        <div class="file-pill">
+                                            <lightning-icon icon-name="doctype:attachment" size="small"></lightning-icon>
+                                            <div class="file-info">
+                                                <span class="file-name">{selectedFile.name}</span>
+                                            </div>
+                                            <button class="remove-file-btn" onclick={removeFile}>×</button>
+                                        </div>
+                                    </template>
+                                    
+                                    <lightning-textarea value={question} onchange={handleOnChange}
+                                        placeholder="Type your message..." class="borderless-textarea" rows="2" variant="label-hidden">
+                                    </lightning-textarea>
+                                    
+                                    <div class="input-actions-row">
+                                        <input type="file" accept=".csv, .xlsx, .xls, .pdf" class="slds-hide" data-id="fileInputExpanded" onchange={handleFileSelected} />
+                                        <button class="icon-action-btn" onclick={triggerFileUploadExpanded} title="Attach File">
+                                            <lightning-icon icon-name="utility:add" size="x-small"></lightning-icon>
+                                        </button>
+                                        
+                                        <div class="spacer"></div>
+                                        
+                                        <button class="icon-action-btn send-btn" onclick={handleOnClick} title="Send">
+                                            <lightning-icon icon-name="utility:send" size="x-small"></lightning-icon>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>   
+
+                        <div class="popup-body slds-col slds-size_1-of-12 slds-layout-item slds-no-flex">
+                            <button 
+                                onclick={toggleSection}
+                                class="custom-vertical-toggle slds-button slds-button_icon slds-button_icon-border-filled"
+                                title={alternativeText}
+                                aria-label={alternativeText}>
+                                <lightning-icon 
+                                    icon-name={iconName} 
+                                    size="x-small">
+                                </lightning-icon>
+                            </button>
+                        </div>
+
+                        <div class="popup-body slds-col slds-size_7-of-12">   
+                            <div class="fixed-inner-container">
+                                <div class="force-scroll">
+
+                                    <template if:true={showProductCatalog}>
+                                        <!--h1 class="custom-heading">{eventHeaderMsg}</h1-->
+                                        <div class="slds-col slds-size_10-of-12">   
+                                            <c-item-selection-l-w-c-new
+                                            record-id={recordId}
+                                            isel-name={ItemselectionName}
+                                            chatbot-context={chatbotContext}
+                                            onguidedsellcat={handleGuidSellCat}> 
+                                            </c-item-selection-l-w-c-new>
+                                        </div>
+                                    </template>
+
+                                    <template if:true={showLineItemsView}>
+                                        <!--h1 class="custom-heading">{eventHeaderMsg}</h1-->
+                                        <c-line-items-view
+                                        record-id={recordId}
+                                        view-name={viewName}
+                                        disable-sticky-header="true"
+                                        chatbot-context={chatbotContext}
+                                        object-api-name={objectApiName}>
+                                        </c-line-items-view>
+                                    </template>
+
+                                    <template if:true={showGuidedSelling}>
+                                        <!--h1 class="custom-heading">{eventHeaderMsg}</h1-->
+
+                                        <c-add-new-item-journey cart-id={recordId} product-details={productDetails}
+                                            onaddproductinvoke={handleaddproductInvoke} onfinish={handleFinishAddFlow}
+                                            aditem-data={adsalescustomData}
+                                            chatbot-context={chatbotContext}
+                                            onlineitemsave={handleLineItemSave}>
+                                        </c-add-new-item-journey>
+
+                                    </template>
+                                    <template if:true={showUnhandledEvent}>
+                                        <h1 class="custom-heading">{eventHeaderMsg}</h1>
+                                    </template>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </template>
+
+
+            <template if:false={isChatExpanded}>
+                <div class="chatbot-popup-nonexpanded">
+
+                    <div class="popup-header">
+                        <span>PacePal</span>            
+                        <button class="close-button" onclick={togglePopup}>×</button>
+                    </div>
+
+                    <div class="slds-grid" style="flex: 1; min-height: 0;">
+
+                        <div class="popup-body slds-col slds-size_11-of-12">
+
+                            <div class="chat-message-container">
+                                <template for:each={chatMessages} for:item="message">
+                                    <div key={message.id} class="chat-message">
+                                        <span>{message.text}</span>
+                                    </div>
+                                </template>
+                            </div>
+
+                            <div class="slds-card_footer">
+                                <!-- 
+                                <div class="slds-align-bottom">
+                                    <img 
+                                        src={iconUrl} 
+                                        alt="Toggle Feature" 
+                                        class="png-icon" 
+                                        onclick={handleIconClick}
+                                    />
+                                </div>
+                                -->
+                                <div class="custom-input-box slds-col slds-size_12-of-12">
+                                    <template if:true={selectedFile}>
+                                        <div class="file-pill">
+                                            <lightning-icon icon-name="doctype:attachment" size="small"></lightning-icon>
+                                            <div class="file-info">
+                                                <span class="file-name">{selectedFile.name}</span>
+                                            </div>
+                                            <button class="remove-file-btn" onclick={removeFile}>×</button>
+                                        </div>
+                                    </template>
+                                    
+                                    <lightning-textarea value={question} onchange={handleOnChange}
+                                        placeholder="Type your message..." class="borderless-textarea" rows="2" variant="label-hidden">
+                                    </lightning-textarea>
+                                    
+                                    <div class="input-actions-row">
+                                        <input type="file" accept=".csv, .xlsx, .xls, .pdf" class="slds-hide" data-id="fileInputNonExpanded" onchange={handleFileSelected} />
+                                        <button class="icon-action-btn" onclick={triggerFileUploadNonExpanded} title="Attach File">
+                                            <lightning-icon icon-name="utility:add" size="x-small"></lightning-icon>
+                                        </button>
+                                        
+                                        <div class="spacer"></div>
+                                        
+                                        <button class="icon-action-btn send-btn" onclick={handleOnClick} title="Send">
+                                            <lightning-icon icon-name="utility:send" size="x-small"></lightning-icon>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="popup-body slds-col slds-size_1-of-12 slds-layout-item slds-no-flex">
+                            <button 
+                                onclick={toggleSection}
+                                class="custom-vertical-toggle slds-button slds-button_icon slds-button_icon-border-filled"
+                                title={alternativeText}
+                                aria-label={alternativeText}>
+                                <lightning-icon 
+                                    icon-name={iconName} 
+                                    size="x-small">
+                                </lightning-icon>
+                            </button>
+                        </div>
+
+                    </div>
+
+                </div>
+            </template>
+
+
+        </template>
+    </div>
+</template>

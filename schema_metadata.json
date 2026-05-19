@@ -1575,6 +1575,12 @@
     "description": "Represents a line item within a quote, detailing the product or service being offered, including pricing, quantities, and other relevant attributes.",
     "fields": [
       {
+        "apiname": "DUMMY_BandwidthSpeed__c",
+        "description": "Mention the bandwidth speed of the product.",
+        "datatype": "Picklist",
+        "picklistValues": ["100 MB", "200 MB", "300 MB"]
+      },
+      {
         "apiname": "Ad_Format__c",
         "description": "The advertising format associated with the quote line item, represented as a formula.",
         "datatype": "Formula (Text)"
@@ -1625,12 +1631,12 @@
         "datatype": "Lookup(Quote Line Item, Asset)"
       },
       {
-        "apiname": "PricingEndDate__c",
+        "apiname": "DUMMY_PricingEndDate__c",
         "description": "The end date of the campaign or pricing for the quote line item.",
         "datatype": "Date"
       },
       {
-        "apiname": "PricingStartDate__c",
+        "apiname": "DUMMY_PricingStartDate__c",
         "description": "The start date of the campaign or pricing for the quote line item.",
         "datatype": "Date"
       },

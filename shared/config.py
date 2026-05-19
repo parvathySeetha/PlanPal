@@ -13,6 +13,7 @@ AGENT_URLS = {
     "marketing": os.getenv("MARKETING_AGENT_URL", "local"),
     "integration": os.getenv("INTEGRATION_AGENT_URL", "local"),
     "reconcillation": os.getenv("RECONCILLATION_AGENT_URL", "local"),
+    "planpal": os.getenv("PLANPAL_AGENT_URL", "local"),
     "io": os.getenv("IO_AGENT_URL", "local"),
 }
 
@@ -22,6 +23,7 @@ MARKETING_PORT = int(os.getenv("MARKETING_PORT", "8002"))
 RECONCILLATION_PORT = int(os.getenv("RECONCILLATION_PORT", "8003"))
 #INTEGRATION_PORT = int(os.getenv("INTEGRATION_PORT", "8003")) # Alias/deprecated?
 IO_PORT = int(os.getenv("IO_PORT", "8004"))
+PLANPAL_PORT = int(os.getenv("PLANPAL_PORT", "8005"))
 
 # Timeouts
 AGENT_TIMEOUT = float(os.getenv("AGENT_TIMEOUT", "300.0"))  # 5 minutes default

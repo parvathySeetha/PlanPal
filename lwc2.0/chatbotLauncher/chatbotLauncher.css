@@ -1,0 +1,452 @@
+.chatbot-container {
+    position: fixed;
+    bottom: 60px;
+    left: 40px;
+    z-index: 9999;
+}
+
+.chatbot-icon {
+    background-color: #0070d2;
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.chatbot-popup {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 93vw;
+	height: 80vh;/* 85vh */
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+
+}
+
+.chatbot-popup-nonexpanded {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 34vw;
+	height:  80vh ;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+
+}
+
+.popup-header {
+    background-color: #0070d2;
+    color: white;
+    padding: 10px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.close-button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+
+.toggle-button {
+    background-color: #f3f3f3; /* light background */
+    border: 1px solid #ccc;
+    border-radius: 20px;       /* rounded edges */
+    padding: 8px 20px;         /* vertical and horizontal padding */
+    color: blueviolet;
+    font-size: 16px;
+    cursor: pointer;
+    min-width: 120px;          /* makes it visibly "long" */
+    text-align: center;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.toggle-button:hover {
+    background-color: blueviolet;
+    color: white;
+}
+
+
+
+
+.toggle-capsule-button {
+    height: 60vh;
+    width: 40px; /* Wider for better touch/click area */
+    /*border-radius: 30px; /* Capsule shape */
+    padding: 0;
+    font-size: 24px;
+    line-height: 10;
+    background-color: #f3f3f3;
+    border: 1px solid #ccc;
+    color: blueviolet;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    /*writing-mode: vertical-rl; /* Optional: rotate content vertically */
+    text-orientation: mixed;
+}
+
+
+.popup-body {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+}
+
+
+.fixed-inner-container {
+    flex: 1;
+    height: 100%;
+}
+
+.force-scroll {
+    height: 100%;
+    overflow-y: auto;
+    padding-right: 1rem; 
+}
+
+.slds-card_footer {
+    position: relative; /* Change from fixed */
+    bottom: auto;
+    width: 100%;
+    background-color: white;
+    border-top: 1px solid #ddd;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: auto; /* Push to bottom */
+}
+
+.input-box {
+    width: 100%;
+    margin-right: 10px;
+}
+
+
+.send-button-icon {
+    width: 30px;
+    height: 30px;
+}
+
+.custom-heading {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+
+
+.chat-message {
+    background-color: #f1f1f1;
+    color: #333;
+    padding: 1rem;
+    margin-top: 1rem;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    width: 80%; 
+    text-align: left; 
+    margin-left: auto;
+    margin-right: 5%; 
+    margin-bottom: 1rem; 
+    word-wrap: break-word;
+}
+
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.textarea-container {
+    position: relative;
+}
+
+.send-button-icon-inside {
+    position: absolute;
+    bottom: 10px; /* Adjust to align vertically within the textarea */
+    right: 10px;  /* Adjust to align with right edge */
+    z-index: 1;
+}
+
+
+.error-message {
+    color: red;
+    font-weight: bold;
+}
+
+
+
+
+
+
+/* Icon positioned just above the input area */
+.icon-above-input {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 8px;
+    border-top: 1px solid #e5e5e5;
+    background-color: #f8f9fa;
+    margin-bottom: 5px;
+}
+
+.png-icon {
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.png-icon:hover {
+    transform: scale(1.1);
+    opacity: 0.8;
+}
+
+.png-icon:active {
+    transform: scale(0.95);
+}
+
+/* Optional: Add a different style when the feature is enabled */
+.png-icon.enabled {
+    filter: brightness(1.2);
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+}
+
+
+
+.slds-card_footer {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-row {
+    display: flex;
+    align-items: flex-end; /* Aligns send button with bottom of textarea */
+    gap: 8px; /* Space between textarea and button */
+    width: 100%; /* Ensure container takes full width */    
+}
+
+.input-box {
+    flex: 1; /* Textarea takes up remaining space */
+    width: 100%; /* Force full width */
+    min-width: 0; /* Allow shrinking if needed */    
+}
+
+/* Keep your existing icon styles */
+.icon-above-input {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 8px;
+    border-top: 1px solid #e5e5e5;
+    background-color: #f8f9fa;
+    margin-bottom: 5px;
+}
+
+
+
+
+/* Unified Gemini-style Input Box */
+.custom-input-box {
+    width: 100%;
+    border: 1px solid #c9c9c9;
+    border-radius: 12px;
+    background: #f8f9fa;
+    padding: 10px 14px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+    transition: all 0.2s ease;
+}
+
+.custom-input-box:focus-within {
+    border-color: #0176d3;
+    box-shadow: 0 0 4px #0176d3;
+    background: #ffffff;
+}
+
+.borderless-textarea {
+    --slds-c-textarea-color-border: transparent;
+    --slds-c-textarea-color-border-focus: transparent;
+    --slds-c-textarea-shadow-focus: none;
+    --slds-c-textarea-color-background: transparent;
+    --slds-c-textarea-sizing-min-height: 44px;
+    margin-bottom: 8px;
+    flex: 1;
+}
+
+.file-pill {
+    display: flex;
+    align-items: center;
+    background: #ffffff;
+    border: 1px solid #d8dde6;
+    border-radius: 8px;
+    padding: 6px 12px;
+    margin-bottom: 12px;
+    width: fit-content;
+    max-width: 90%;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.file-info {
+    margin-left: 8px;
+    margin-right: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #16325c;
+}
+
+.remove-file-btn {
+    background: none;
+    border: none;
+    font-size: 1.4rem;
+    line-height: 1;
+    color: #706e6b;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+}
+
+.remove-file-btn:hover {
+    color: #ba0517;
+}
+
+.input-actions-row {
+    display: flex;
+    align-items: center;
+}
+
+.spacer {
+    flex: 1;
+}
+
+.icon-action-btn {
+    background: #e5e5e5;
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+}
+
+.icon-action-btn:hover {
+    background: #d4d4d4;
+    transform: scale(1.05);
+}
+
+.icon-action-btn.send-btn {
+    background: #0176d3;
+}
+
+.icon-action-btn.send-btn lightning-icon {
+    --slds-c-icon-color-foreground: white;
+    --slds-c-icon-color-foreground-default: white;
+}
+
+.icon-action-btn.send-btn:hover {
+    background: #015ba7;
+}
+
+
+
+/* yourComponent.css */
+.vertical-toggle-btn {
+    height: 100px; /* Adjust height as needed */
+    width: 24px;   /* Keep width small */
+    min-height: 100px;
+}
+
+/* Target the actual button element inside lightning-button-icon */
+.vertical-toggle-btn lightning-primitive-icon {
+    width: 16px;
+    height: 16px;
+}
+
+/* Alternative approach if you need more control */
+.vertical-toggle-btn button {
+    height: 100px !important;
+    width: 24px !important;
+    min-width: 24px !important;
+    padding: 8px 4px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+
+
+
+/* CSS for custom button approach */
+.custom-vertical-toggle {
+    height: 60vh !important;
+    width: 16px !important;
+    min-width: 16px !important;
+    max-width: 16px !important;
+    padding: 8px 2px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-sizing: border-box !important;
+    border: 1px solid #d8dde6 !important;
+    background: white !important;
+    border-radius: 0.25rem !important;
+}
+
+.custom-vertical-toggle:hover {
+    background: #f4f6f9 !important;
+    border-color: #1b96ff !important;
+}
+
+.custom-vertical-toggle:focus {
+    outline: none !important;
+    box-shadow: 0 0 3px #1b96ff !important;
+}
+
+.custom-vertical-toggle lightning-icon {
+    pointer-events: none;
+}
+
+
+
+.chat-message-container {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    flex: 1; /* Take remaining space */
+}

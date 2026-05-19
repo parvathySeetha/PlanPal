@@ -1,30 +1,18 @@
-import json
-import asyncio
+import sys
+import logging
+from config import get_salesforce_config
 from mcp_module.Salesforcemcp.client.sf_client import SalesforceClient
 
-def get_query_fields(object_name: str) -> str:
-    with open("schema_metadata.json", "r", encoding="utf-8") as f:
-        data = json.load(f)
-    obj_meta = next((item for item in data if item["object"].lower() == object_name.lower()), {})
-    fields = obj_meta.get("fields", [])
-    return [f.get("apiname") for f in fields if f.get("apiname")]
+logging.basicConfig(level=logging.INFO)
 
-client = SalesforceClient("marketing")
-client.connect()
+print("Getting config for demo...")
+config = get_salesforce_config("demo")
+print(f"Username from config: {config.get('SALESFORCE_USERNAME')}")
 
-fields = get_query_fields("OrderItem")
-print(f"Total fields: {len(fields)}")
+sf_client = SalesforceClient("demo")
+sf_client.connect()
+print(f"Connected to session: {sf_client.sf.session_id[:10]}...")
 
-valid_fields = []
-invalid_fields = []
-
-for f in fields:
-    query = f"SELECT {f} FROM OrderItem LIMIT 1"
-    try:
-        res = client.sf.query(query)
-        valid_fields.append(f)
-    except Exception as e:
-        invalid_fields.append(f)
-
-print(f"Valid fields ({len(valid_fields)}): {valid_fields}")
-print(f"Invalid fields ({len(invalid_fields)}): {invalid_fields}")
+query = "SELECT Id, Pricebook2Id FROM Quote WHERE Id = '0Q0g8000000ajWTCAY'"
+res = sf_client.sf.query(query)
+print(res)

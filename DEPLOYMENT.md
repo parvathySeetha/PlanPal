@@ -92,12 +92,14 @@ MARKETING_SALESFORCE_DOMAIN=login
 
 ### Agent URLs (Distributed Mode Only)
 - `MARKETING_AGENT_URL` - URL of marketing agent (e.g., `http://localhost:8002`)
+- `PLANPAL_AGENT_URL` - URL of PlanPal agent (e.g., `http://localhost:8005`)
 - `INTEGRATION_AGENT_URL` - URL of integration agent (default: `local`)
 - `IO_AGENT_URL` - URL of IO agent (default: `local`)
 
 ### Ports
 - `PACEPAL_PORT` - PacePal server port (default: `8001`)
 - `MARKETING_PORT` - Marketing agent port (default: `8002`)
+- `PLANPAL_PORT` - PlanPal agent port (default: `8005`)
 
 ## Testing
 
