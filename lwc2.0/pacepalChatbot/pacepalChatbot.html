@@ -64,12 +64,19 @@
                                 onclosepopup={closePopup}></c-io-chatbot-popup-list-v2>
                         </template>
 
-                        <!-- Guided Selling Display Panel -ps -->
+                        <!--ps start Guided Selling Display Panel -ps -->
                         <template if:true={isGuidedSellingOpen}>
-                            <c-guided-selling-display-list class="v2-embedded" guided-selling-data={guidedSellingData}
-                                onclose={closeGuidedSelling}>
-                            </c-guided-selling-display-list>
+                            <div class="add-product-popup">
+                                <div class="add-product-popup-inner">
+                                    <crma_i_act-add-new-item-journey cart-id={recordId} product-details={productDetails}
+                                        onaddproductinvoke={handleaddproductInvoke} onfinish={handleFinishAddFlow}
+                                        aditem-data={adsalescustomData} chatbot-context={chatbotContext}
+                                        onlineitemsave={handleLineItemSave}>
+                                    </crma_i_act-add-new-item-journey>
+                                </div>
+                            </div>
                         </template>
+
                         <!-- ps end -->
 
                     </div>
@@ -482,7 +489,7 @@
                                         </div>
 
 
-                                        <!-- NEW: Guided Selling Message Card ps-->
+                                        <!-- ps start NEW: Guided Selling Message Card ps-->
                                         <template if:true={msg.isGuidedSelling}>
                                             <div class="message-content guided-selling-message">
                                                 <div class="guided-selling-card" data-id={msg.id}

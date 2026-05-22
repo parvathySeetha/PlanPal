@@ -1039,10 +1039,17 @@
     flex: 1;
 } */
 
-.chat-body--split {
+/* .chat-body--split {
     flex-direction: row;
     gap: 12px;
     padding: 0 12px 12px;
+    background: #f4f6f9;
+} */
+
+.chat-body--split {
+    flex-direction: row;
+    gap: 12px;
+    padding: 12px;
     background: #f4f6f9;
 }
 
@@ -1063,17 +1070,64 @@
     min-width: 0;
     min-height: 0;
     display: flex;
+    flex-direction: column;
+    width: 100%;
     overflow: hidden;
 }
 
-.v2-panel c-io-chatbot-popup-list-v2 {
+/* .v2-panel c-io-chatbot-popup-list-v2 {
     flex: 1;
     display: block;
     min-width: 0;
     min-height: 0;
+} */
+
+/* //ps */
+.v2-panel c-guided-selling-display-list,
+.v2-panel c-recon-chatbot-popup-list,
+.v2-panel c-io-chatbot-popup-list-v2 {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    min-height: 0;
 }
 
-Header
+.add-product-popup {
+    flex: 1;
+    width: 100%;
+    background: #f8fafc;
+    padding: 24px 32px 32px 32px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.add-product-popup-inner {
+    width: 100%;
+    max-width: 1080px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+    padding: 24px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+}
+
+.add-product-popup crma_i_act-add-new-item-journey {
+    display: block;
+    width: 100%;
+}
+
+/* //ps end */
+
+/* Header */
 .chat-header {
     background: linear-gradient(135deg, #0176d3 0%, #0b5cab 100%);
     color: white;

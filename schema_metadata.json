@@ -103,7 +103,12 @@
         "apiname": "GenderIdentity",
         "description": "A picklist field to capture the gender identity of the contact for demographic profiling or targeted marketing.",
         "datatype": "Picklist",
-        "picklistValues": ["Male", "Female", "Nonbinary", "Not Listed"],
+        "picklistValues": [
+          "Male",
+          "Female",
+          "Nonbinary",
+          "Not Listed"
+        ],
         "FieldLabel": "Gender Identity"
       },
       {
@@ -443,7 +448,12 @@
         "datatype": "Picklist",
         "defaultValue": "Planned",
         "needvalue": true,
-        "picklistValues": ["Planned", "In Progress", "Completed", "Aborted"]
+        "picklistValues": [
+          "Planned",
+          "In Progress",
+          "Completed",
+          "Aborted"
+        ]
       },
       {
         "FieldLabel": "Type",
@@ -657,7 +667,14 @@
         "apiname": "Salutation",
         "description": "The salutation of the campaign member used for respectful communication in personalized marketing.",
         "datatype": "Picklist",
-        "picklistValues": ["Mr.", "Ms.", "Mrs.", "Dr.", "Prof.", "Mx."],
+        "picklistValues": [
+          "Mr.",
+          "Ms.",
+          "Mrs.",
+          "Dr.",
+          "Prof.",
+          "Mx."
+        ],
         "FieldLabel": "Salutation"
       },
       {
@@ -670,7 +687,12 @@
         "apiname": "Status",
         "description": "Picklist field that tracks the EMAIL CAMPAIGN ENGAGEMENT status of the campaign member (e.g., whether the email was Sent, Received, or they Responded). IMPORTANT: This field is NOT for employment status. To filter contacts who are currently working at the company, use the Contact object's Start_Date__c and End_Date__c fields instead. Values like 'Sent', 'Responded', 'Planned' indicate email campaign activity, not whether someone is actively employed.",
         "datatype": "Picklist",
-        "picklistValues": ["Planned", "Sent", " Received", " Responded "],
+        "picklistValues": [
+          "Planned",
+          "Sent",
+          " Received",
+          " Responded "
+        ],
         "FieldLabel": "Status"
       },
       {
@@ -839,7 +861,12 @@
         "apiname": "GenderIdentity",
         "description": "Picklist field capturing the gender identity of the lead, useful for demographic segmentation in campaigns.",
         "datatype": "Picklist",
-        "picklistValues": ["Male", "Female", "Nonbinary", "Not Listed"],
+        "picklistValues": [
+          "Male",
+          "Female",
+          "Nonbinary",
+          "Not Listed"
+        ],
         "FieldLabel": "Gender Identity"
       },
       {
@@ -913,7 +940,14 @@
         "apiname": "Salutation",
         "description": "The salutation used when addressing the lead in communications.",
         "datatype": "Picklist",
-        "picklistValues": ["Mr.", "Ms.", "Mrs.", "Dr.", "Prof.", "Mx."],
+        "picklistValues": [
+          "Mr.",
+          "Ms.",
+          "Mrs.",
+          "Dr.",
+          "Prof.",
+          "Mx."
+        ],
         "FieldLabel": "Salutation"
       },
       {
@@ -950,14 +984,21 @@
         "apiname": "Primary__c",
         "description": "Picklist field indicating whether this lead is considered a primary contact for the associated company or account.",
         "datatype": "Picklist",
-        "picklistValues": ["No", "Yes"],
+        "picklistValues": [
+          "No",
+          "Yes"
+        ],
         "FieldLabel": "Primary"
       },
       {
         "apiname": "ProductInterest__c",
         "description": "Picklist to capture the products or services the lead is interested in, useful for segmentation and targeted sales outreach.",
         "datatype": "Picklist",
-        "picklistValues": ["GC1000 series", "GC5000 series", "GC3000 series"],
+        "picklistValues": [
+          "GC1000 series",
+          "GC5000 series",
+          "GC3000 series"
+        ],
         "FieldLabel": "Product Interest"
       },
       {
@@ -978,7 +1019,11 @@
         "apiname": "Rating",
         "description": "Picklist field to rate the lead's quality or readiness for conversion, useful for prioritizing leads in the sales process.",
         "datatype": "Picklist",
-        "picklistValues": ["Hot", "Warm", "Cold"],
+        "picklistValues": [
+          "Hot",
+          "Warm",
+          "Cold"
+        ],
         "FieldLabel": "Rating"
       },
       {
@@ -1151,7 +1196,12 @@
         "apiname": "Ownership",
         "description": "Indicates the ownership structure of the account, whether it\u2019s private, public, or government. This can have a significant impact on the contract renewal terms, with government accounts possibly having specific regulatory compliance needs, while private companies might negotiate differently based on business objectives.",
         "datatype": "Picklist",
-        "picklistValues": ["Public", "Private", "Subsidiary", "Other"]
+        "picklistValues": [
+          "Public",
+          "Private",
+          "Subsidiary",
+          "Other"
+        ]
       },
       {
         "apiname": "ParentId",
@@ -1167,7 +1217,11 @@
         "apiname": "PaymentTerm__c",
         "description": "The payment terms associated with the account, such as net 30, net 60, or customized payment schedules. This field is critical for managing financial aspects of the relationship, such as payment cycles and renewal billing schedules. It ensures that the business and customer align on payment expectations.",
         "datatype": "Picklist",
-        "picklistValues": ["Net 30", "Net 60", "Net 90"]
+        "picklistValues": [
+          "Net 30",
+          "Net 60",
+          "Net 90"
+        ]
       },
       {
         "apiname": "Phone",
@@ -1178,7 +1232,12 @@
         "apiname": "POICategory__c",
         "description": "The category of Points of Interest (POI) linked to the account. POIs could include specific business operations, such as retail locations or data centers. Identifying these points helps in creating location-specific contracts or renewal strategies for businesses with multiple facilities or assets.",
         "datatype": "Picklist",
-        "picklistValues": ["Hotel", "Eatery", "Retailshops", "Healthcare"]
+        "picklistValues": [
+          "Hotel",
+          "Eatery",
+          "Retailshops",
+          "Healthcare"
+        ]
       },
       {
         "apiname": "POI_Image_URL__c",
@@ -1217,7 +1276,11 @@
         "apiname": "Rating",
         "description": "The rating or assessment assigned to the account based on business criteria. This field helps prioritize accounts for services, identify key renewal opportunities, or decide which accounts need special attention during contract negotiations.",
         "datatype": "Picklist",
-        "picklistValues": ["hot", "warm", "cold"]
+        "picklistValues": [
+          "hot",
+          "warm",
+          "cold"
+        ]
       },
       {
         "apiname": "ShippingAddress",
@@ -1445,13 +1508,23 @@
         "apiname": "ProposalDuration__c",
         "description": "The duration of the proposal associated with the quote, represented as a picklist value.",
         "datatype": "Picklist",
-        "picklistValues": ["Short", "Medium", "Long", "Evergreen"]
+        "picklistValues": [
+          "Short",
+          "Medium",
+          "Long",
+          "Evergreen"
+        ]
       },
       {
         "apiname": "ProposedACV__c",
         "description": "The proposed annual contract value associated with the quote, represented as a picklist value.",
         "datatype": "Picklist",
-        "picklistValues": ["Low", "Medium", "High", "Grand"]
+        "picklistValues": [
+          "Low",
+          "Medium",
+          "High",
+          "Grand"
+        ]
       },
       {
         "apiname": "QuoteName",
@@ -1575,35 +1648,9 @@
     "description": "Represents a line item within a quote, detailing the product or service being offered, including pricing, quantities, and other relevant attributes.",
     "fields": [
       {
-        "apiname": "DUMMY_BandwidthSpeed__c",
-        "description": "Mention the bandwidth speed of the product.",
-        "datatype": "Picklist",
-        "picklistValues": ["100 MB", "200 MB", "300 MB"]
-      },
-      {
-        "apiname": "Ad_Format__c",
-        "description": "The advertising format associated with the quote line item, represented as a formula.",
-        "datatype": "Formula (Text)"
-      },
-      {
-        "apiname": "Ad_Format_Test__c",
-        "description": "Test field for storing advertising format information.",
-        "datatype": "Text(50)"
-      },
-      {
-        "apiname": "Ad_Placement_Definition__c",
-        "description": "Lookup field to the Ad Placement Definition, which defines where the ad will be placed.",
-        "datatype": "Lookup(Ad Placement Definition)"
-      },
-      {
-        "apiname": "AdServer__c",
-        "description": "The ad server associated with the quote line item.",
-        "datatype": "Text(200)"
-      },
-      {
-        "apiname": "Ad_size__c",
-        "description": "The size of the ad, represented as a formula.",
-        "datatype": "Formula (Text)"
+        "apiname": "Placement_Name__c",
+        "description": "The name of the placement associated with the quote line item.",
+        "datatype": "Text Area(255)"
       },
       {
         "apiname": "Attribute_Selected_Values__c",
@@ -1611,239 +1658,49 @@
         "datatype": "Long Text Area(32768)"
       },
       {
-        "apiname": "BillingFrequency",
-        "description": "The frequency of billing for this quote line item, such as monthly or annually.",
-        "datatype": "Picklist"
+        "apiname": "ContractTermPlanPal__c",
+        "description": "The contract duration for the Business Internet quote line item, usually represented in months such as 12, 24, or 36.",
+        "datatype": "Number"
       },
       {
-        "apiname": "BillingReference",
-        "description": "A reference field for the billing associated with this quote line item.",
-        "datatype": "Text(80)"
+        "apiname": "IsPrimaryPlanPal__c",
+        "description": "Indicates whether this quote line item is the primary Business Internet service line for the quote.",
+        "datatype": "Checkbox"
       },
       {
-        "apiname": "BillingTreatmentId",
-        "description": "Lookup field to the Billing Treatment, defining how the billing is handled for this line item.",
-        "datatype": "Lookup(Billing Treatment)"
+        "apiname": "InstallationTypePlanPal__c",
+        "description": "Defines the type of installation or service action required for the Business Internet line item.",
+        "datatype": "Picklist",
+        "picklistValues": [
+          "New",
+          "Upgrade",
+          "Change"
+        ]
       },
       {
-        "apiname": "BindingInstanceTargetId",
-        "description": "The target for binding the instance, such as an associated quote line item or asset.",
-        "datatype": "Lookup(Quote Line Item, Asset)"
+        "apiname": "Targeting_Parameter__c",
+        "description": "Targeting parameters for the quote line item, typically used for advertising or media.",
+        "datatype": "Long Text Area(131072)"
       },
       {
-        "apiname": "DUMMY_PricingEndDate__c",
-        "description": "The end date of the campaign or pricing for the quote line item.",
-        "datatype": "Date"
-      },
-      {
-        "apiname": "DUMMY_PricingStartDate__c",
+        "apiname": "crma_i_act__PricingStartDate__c",
         "description": "The start date of the campaign or pricing for the quote line item.",
         "datatype": "Date"
       },
       {
-        "apiname": "LineitemGroup__c",
-        "description": "Lookup to the CRMA Lineitem Group, categorizing the quote line item.",
-        "datatype": "Lookup(CRMA Lineitem Group)"
-      },
-      {
-        "apiname": "CustomProductName",
-        "description": "Custom name for the product associated with this quote line item.",
-        "datatype": "Text(255)"
-      },
-      {
-        "apiname": "ServiceDate",
-        "description": "The date when the service or product is provided or activated.",
-        "datatype": "Date"
-      },
-      {
-        "apiname": "DiscountAmount",
-        "description": "The discount applied to this quote line item, represented as a currency value.",
-        "datatype": "Currency(16, 2)"
-      },
-      {
-        "apiname": "Discount",
-        "description": "The discount applied to this quote line item, represented as a percentage.",
-        "datatype": "Percent(3, 2)"
-      },
-      {
-        "apiname": "EffectiveGrantDate",
-        "description": "The date when the grant or pricing is effective for this quote line item.",
-        "datatype": "Date"
-      },
-      {
-        "apiname": "EndDate",
-        "description": "The end date for the quote line item.",
-        "datatype": "Date"
-      },
-      {
-        "apiname": "EndQuantity",
-        "description": "The ending quantity of the item or service in this quote line item.",
-        "datatype": "Number(10, 2)"
-      },
-      {
-        "apiname": "Flight_End__c",
-        "description": "The end date for the flight associated with this quote line item.",
+        "apiname": "crma_i_act__PricingEndDate__c",
+        "description": "The end date of the campaign or pricing for the quote line item.",
         "datatype": "Date"
       },
       {
         "apiname": "Flight_Start__c",
-        "description": "The start date for the flight associated with this quote line item.",
+        "description": "The planned installation or service activation date for the quote line item.",
         "datatype": "Date"
       },
       {
-        "apiname": "Frequency__c",
-        "description": "The frequency associated with the quote line item, such as weekly or monthly.",
-        "datatype": "Number(18, 0)"
-      },
-      {
-        "apiname": "IsPrimarySegment",
-        "description": "Indicates whether this quote line item is part of the primary segment.",
-        "datatype": "Checkbox"
-      },
-      {
-        "apiname": "IsSkippable__c",
-        "description": "Indicates whether the quote line item is skippable.",
-        "datatype": "Checkbox"
-      },
-      {
-        "apiname": "LegalEntityId",
-        "description": "The legal entity associated with this quote line item, referenced by a lookup to the Legal Entity object.",
-        "datatype": "Lookup(Legal Entity)"
-      },
-      {
-        "apiname": "Description",
-        "description": "A brief description of the quote line item.",
-        "datatype": "Text(255)"
-      },
-      {
-        "apiname": "Line_Item_GUID__c",
-        "description": "A globally unique identifier for the quote line item, automatically generated.",
-        "datatype": "Auto Number"
-      },
-      {
-        "apiname": "LineNumber",
-        "description": "The line number for the quote line item, automatically generated.",
-        "datatype": "Auto Number"
-      },
-      {
-        "apiname": "ListPrice",
-        "description": "The list price for the quote line item, in the specified currency.",
-        "datatype": "Currency(16, 2)"
-      },
-      {
-        "apiname": "MediaType__c",
-        "description": "The type of media associated with the quote line item.",
-        "datatype": "Picklist",
-        "picklistValues": [
-          "Digital",
-          "Linear",
-          "Print",
-          "OOH",
-          "TV",
-          "Radio",
-          "TV-Channel",
-          "TV-Program"
-        ]
-      },
-      {
-        "apiname": "NetTotalPrice",
-        "description": "The net total price for the quote line item, in the specified currency.",
-        "datatype": "Currency(16, 2)"
-      },
-      {
-        "apiname": "NetUnitPrice",
-        "description": "The net unit price for the quote line item, in the specified currency.",
-        "datatype": "Currency(16, 2)"
-      },
-      {
-        "apiname": "No_of_Issue__c",
-        "description": "The number of issues or occurrences for this quote line item.",
-        "datatype": "Number(18, 0)"
-      },
-      {
-        "apiname": "Offer__c",
-        "description": "Formula field that calculates or stores the offer associated with the quote line item.",
-        "datatype": "Formula (Text)"
-      },
-      {
-        "apiname": "BaseOneTimeCharge__c",
-        "description": "The one-time charge applied to the quote line item.",
-        "datatype": "Currency(18, 0)"
-      },
-      {
-        "apiname": "BaseOneTimeTotal__c",
-        "description": "The total one-time charge applied to the quote line item.",
-        "datatype": "Currency(18, 0)"
-      },
-      {
-        "apiname": "ParentQuoteLineItemId",
-        "description": "The ID of the parent quote line item, if this is a child quote line item.",
-        "datatype": "Lookup(Quote Line Item)"
-      },
-      {
-        "apiname": "PartnerDiscountPercent",
-        "description": "The discount percentage applied to the partner for this quote line item.",
-        "datatype": "Percent(3, 2)"
-      },
-      {
-        "apiname": "PartnerUnitPrice",
-        "description": "The unit price for the partner, in the specified currency.",
-        "datatype": "Currency(16, 2)"
-      },
-      {
-        "apiname": "PeriodBoundaryDay",
-        "description": "The day associated with the period boundary for the quote line item.",
-        "datatype": "Number(9, 0)"
-      },
-      {
-        "apiname": "Placement_Name__c",
-        "description": "The name of the placement associated with the quote line item.",
-        "datatype": "Text Area(255)"
-      },
-      {
-        "apiname": "Placement_Option__c",
-        "description": "Formula field that calculates or stores the placement option for the quote line item.",
-        "datatype": "Formula (Text)"
-      },
-      {
-        "apiname": "POI__c",
-        "description": "Lookup to the Points of Interest (POI) associated with the quote line item.",
-        "datatype": "Lookup(Account)"
-      },
-      {
-        "apiname": "PremisesId__c",
-        "description": "Lookup to the premises associated with the quote line item.",
-        "datatype": "Lookup(Premise)"
-      },
-      {
-        "apiname": "PriceWaterfallIdentifier",
-        "description": "Unique identifier for the price waterfall associated with the quote line item.",
-        "datatype": "Text(80)"
-      },
-      {
-        "apiname": "PricingContractId",
-        "description": "Lookup to the pricing contract associated with the quote line item.",
-        "datatype": "Lookup(Contract)"
-      },
-      {
-        "apiname": "PricingModel__c",
-        "description": "The pricing model applied to the quote line item.",
-        "datatype": "Text(200)"
-      },
-      {
-        "apiname": "PricingTerm",
-        "description": "The pricing term for the quote line item, such as monthly or annually.",
-        "datatype": "Number(9, 0)"
-      },
-      {
-        "apiname": "PricingTermCount",
-        "description": "The number of periods for the pricing term of the quote line item.",
-        "datatype": "Number(16, 2)"
-      },
-      {
-        "apiname": "PriorQuoteLineItemId__c",
-        "description": "Lookup to the prior quote line item associated with this line item.",
-        "datatype": "Lookup(Quote Line Item)"
+        "apiname": "Flight_End__c",
+        "description": "The planned disconnection or service end date for the quote line item.",
+        "datatype": "Date"
       },
       {
         "apiname": "Product2Id",
@@ -1861,39 +1718,9 @@
         "datatype": "Formula (Text)"
       },
       {
-        "apiname": "ProductInstanceIdentifier",
-        "description": "The unique identifier for the product instance associated with the quote line item.",
-        "datatype": "Text(255)"
-      },
-      {
-        "apiname": "ProrationPolicyId",
-        "description": "Lookup to the proration policy associated with the quote line item.",
-        "datatype": "Lookup(Proration Policy)"
-      },
-      {
         "apiname": "Quantity",
         "description": "The quantity of the product or service for this quote line item.",
         "datatype": "Number(10, 2)"
-      },
-      {
-        "apiname": "QuantityUnitOfMeasureId",
-        "description": "Lookup to the unit of measure for the quantity in this quote line item.",
-        "datatype": "Lookup(Unit of Measure)"
-      },
-      {
-        "apiname": "QuoteActionId",
-        "description": "Lookup to the quote action associated with this quote line item.",
-        "datatype": "Lookup(Quote Action)"
-      },
-      {
-        "apiname": "QuoteLineGroupId",
-        "description": "Lookup to the quote line group associated with this quote line item.",
-        "datatype": "Lookup(Quote Line Group)"
-      },
-      {
-        "apiname": "QuoteLineItemRecipientId",
-        "description": "Lookup to the recipient associated with this quote line item.",
-        "datatype": "Lookup(Quote Line Item Recipient)"
       },
       {
         "apiname": "QuoteId",
@@ -1901,34 +1728,9 @@
         "datatype": "Master-Detail(Quote)"
       },
       {
-        "apiname": "RampIdentifier",
-        "description": "Identifier for the ramp pricing associated with this quote line item.",
-        "datatype": "Text(255)"
-      },
-      {
-        "apiname": "BaseRecurringCharge__c",
-        "description": "The recurring charge applied to this quote line item.",
-        "datatype": "Currency(18, 0)"
-      },
-      {
-        "apiname": "BaseRecurringTotal__c",
-        "description": "The total recurring charge applied to this quote line item.",
-        "datatype": "Currency(18, 0)"
-      },
-      {
         "apiname": "UnitPrice",
         "description": "The unit price of the product or service for this quote line item.",
         "datatype": "Currency(16, 2)"
-      },
-      {
-        "apiname": "SegmentIdentifier",
-        "description": "The unique identifier for the segment associated with this quote line item.",
-        "datatype": "Text(255)"
-      },
-      {
-        "apiname": "SegmentName",
-        "description": "The name of the segment associated with this quote line item.",
-        "datatype": "Text(255)"
       },
       {
         "apiname": "ServiceAccountId__c",
@@ -1936,9 +1738,29 @@
         "datatype": "Lookup(Account)"
       },
       {
-        "apiname": "SortOrder",
-        "description": "The sort order for the quote line item.",
-        "datatype": "Number(9, 0)"
+        "apiname": "DiscountAmount",
+        "description": "The discount applied to this quote line item, represented as a currency value.",
+        "datatype": "Currency(16, 2)"
+      },
+      {
+        "apiname": "Description",
+        "description": "A brief description of the quote line item.",
+        "datatype": "Text(255)"
+      },
+      {
+        "apiname": "POI__c",
+        "description": "Lookup to the Points of Interest (POI) associated with the quote line item.",
+        "datatype": "Lookup(Account)"
+      },
+      {
+        "apiname": "PremisesId__c",
+        "description": "Lookup to the premises associated with the quote line item.",
+        "datatype": "Lookup(Premise)"
+      },
+      {
+        "apiname": "PricingModel__c",
+        "description": "The pricing model applied to the quote line item.",
+        "datatype": "Text(200)"
       },
       {
         "apiname": "Spend_Metric__c",
@@ -1952,23 +1774,8 @@
         "picklistValues": [
           "Cost Per Location",
           "Full Page",
-          "Half Page",
-          "CPM",
-          "CPV",
-          "Fixed Rate",
-          "Location-Based",
-          "Seasonal Pricing"
+          "Half Page"
         ]
-      },
-      {
-        "apiname": "StartDate",
-        "description": "The start date for the quote line item.",
-        "datatype": "Date"
-      },
-      {
-        "apiname": "StartQuantity",
-        "description": "The starting quantity for the quote line item.",
-        "datatype": "Number(10, 2)"
       },
       {
         "apiname": "Status__c",
@@ -1983,57 +1790,12 @@
         ]
       },
       {
-        "apiname": "SubscriptionTerm",
-        "description": "The subscription term for the quote line item, expressed as a number.",
-        "datatype": "Number(9, 0)"
-      },
-      {
-        "apiname": "Subtotal",
-        "description": "The subtotal for the quote line item, excluding taxes and adjustments.",
-        "datatype": "Currency(16, 2)"
-      },
-      {
-        "apiname": "Targeting_Parameter__c",
-        "description": "Targeting parameters for the quote line item, typically used for advertising or media.",
-        "datatype": "Long Text Area(131072)"
-      },
-      {
-        "apiname": "TaxTreatmentId",
-        "description": "Lookup to the tax treatment associated with the quote line item.",
-        "datatype": "Lookup(Tax Treatment)"
-      },
-      {
-        "apiname": "TotalAdjustmentAmount",
-        "description": "The total adjustment amount for the quote line item.",
-        "datatype": "Currency(16, 2)"
-      },
-      {
         "apiname": "Total_Billing_Cost__c",
         "description": "The total billing cost for the quote line item.",
         "datatype": "Currency(18, 0)"
-      },
-      {
-        "apiname": "TotalLineAmount",
-        "description": "The total amount for the quote line item, including discounts and adjustments.",
-        "datatype": "Currency(16, 2)"
-      },
-      {
-        "apiname": "TotalPrice",
-        "description": "The total price for the quote line item, including all adjustments and taxes.",
-        "datatype": "Currency(16, 2)"
-      },
-      {
-        "apiname": "TotalPriceWithTax",
-        "description": "The total price for the quote line item, including taxes.",
-        "datatype": "Currency(16, 2)"
-      },
-      {
-        "apiname": "TotalTaxAmount",
-        "description": "The total tax amount for the quote line item, calculated as a roll-up summary from Quote Item Tax Item.",
-        "datatype": "Roll-Up Summary (SUM Quote Item Tax Item)"
       }
     ]
-  },
+  }
   {
     "object": "Contract",
     "description": "The Contract object represents a legal agreement between two or more parties that outlines terms, conditions, obligations, and rights. Contracts often cover aspects such as pricing, timelines, deliverables, and obligations that are critical to managing the lifecycle of business agreements. This object also includes key attributes for tracking contract activation, renewals, amendments, and terminations, providing a comprehensive view of business operations and contractual relationships.",
@@ -2316,7 +2078,10 @@
         "apiname": "Status",
         "description": "The current status of the sales contract line, such as active, completed, or expired.",
         "datatype": "Picklist",
-        "picklistValues": ["Active", "Inactive"]
+        "picklistValues": [
+          "Active",
+          "Inactive"
+        ]
       },
       {
         "apiname": "TotalPrice",
@@ -2563,7 +2328,10 @@
         "apiname": "Status",
         "description": "The current status of the order, such as draft or activated.",
         "datatype": "Picklist",
-        "picklistValues": ["Draft", "Activated"]
+        "picklistValues": [
+          "Draft",
+          "Activated"
+        ]
       },
       {
         "apiname": "TotalAdjustedDeliveryAmount",
@@ -2952,7 +2720,11 @@
         "apiname": "Type",
         "description": "The type of order item, such as product or service.",
         "datatype": "Picklist",
-        "picklistValues": ["Order Product", "Delivery Charge", "Fee"]
+        "picklistValues": [
+          "Order Product",
+          "Delivery Charge",
+          "Fee"
+        ]
       },
       {
         "apiname": "UnitPrice",
@@ -3748,6 +3520,42 @@
         "apiname": "Order_Product__c",
         "datatype": "Lookup (OrderItem)",
         "FieldLabel": "Order Product"
+      }
+    ]
+  },
+  {
+    "object": "crma_i_act__OfferUITheme__c",
+    "description": "Stores the UI Theme configuration for Guided Selling for a specific Product. Used to map products to their interactive form configurations.",
+    "fields": [
+      {
+        "apiname": "crma_i_act__UITheme__r.Name",
+        "label": "UI Theme Name",
+        "description": "Name of the parent UI Theme. Should be 'Guided Selling' for guided selling contexts.",
+        "datatype": "Text"
+      },
+      {
+        "apiname": "crma_i_act__CartContext__c",
+        "label": "CartContext",
+        "description": "Context of the cart, typically 'Quote' or 'Order'.",
+        "datatype": "Picklist"
+      },
+      {
+        "apiname": "crma_i_act__IsActive__c",
+        "label": "Active",
+        "description": "Indicates whether this theme is currently active.",
+        "datatype": "Boolean"
+      },
+      {
+        "apiname": "crma_i_act__OfferUIDefinition__c",
+        "label": "OfferUIDefinition",
+        "description": "A JSON string defining the UI layout, sections, and fields needed for configuring the product line item.",
+        "datatype": "Textarea"
+      },
+      {
+        "apiname": "crma_i_act__Product__c",
+        "label": "Product",
+        "description": "Lookup to the Product2 object that this UI Theme is attached to.",
+        "datatype": "Lookup(Product2)"
       }
     ]
   }

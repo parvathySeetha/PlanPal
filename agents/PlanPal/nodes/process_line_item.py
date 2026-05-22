@@ -160,92 +160,62 @@ async def process_line_item_node(state: PlanPalState) -> PlanPalState:
             match_json['product_id'] = matched_pbe_record.get('Product2Id')
             match_json['family'] = matched_pbe_record.get('Product2', {}).get('Family')
 
-        # 5. Fetch Schema Fields for Child Object
-        logger.info(f"   [PlanPal] Loading schema metadata for child object: {child_obj}...")
-        available_fields = []
-        try:
-            base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-            project_root = os.path.dirname(os.path.dirname(base_dir))
-            schema_path = os.path.join(project_root, "schema_metadata.json")
-            if not os.path.exists(schema_path):
-                schema_path = os.path.join(os.getcwd(), "schema_metadata.json")
-                
-            with open(schema_path, "r", encoding="utf-8") as f:
-                schema_data = json.load(f)
-                
-            obj_meta = next((item for item in schema_data if item.get("object", "").lower() == child_obj.lower()), None)
-            if obj_meta and "fields" in obj_meta:
-                for f in obj_meta["fields"]:
-                    # We only need the basic info for the prompt
-                    available_fields.append({
-                        "name": f.get("apiname"),
-                        "type": f.get("datatype"),
-                        "label": f.get("label", f.get("apiname")),
-                        "picklistOptions": f.get("picklistValues", [])
-                    })
-            else:
-                logger.warning(f"⚠️ [PlanPal] No fields found for {child_obj} in schema_metadata.json")
-        except Exception as e:
-            logger.error(f"❌ [PlanPal] Error loading schema_metadata.json: {e}")
-            
-        if not available_fields:
-            logger.info("   [PlanPal] Using fallback schema fields for child object.")
-            # Fallback
-            available_fields = [
-                { "name": "Quantity", "type": "number", "label": "Quantity" },
-                { "name": "UnitPrice", "type": "number", "label": "Sales Price" },
-                { "name": "Description", "type": "Text", "label": "Line Description" }
-            ]
-        else:
-            logger.info(f"✅ [PlanPal] Successfully loaded {len(available_fields)} schema fields for {child_obj}.")
-
-        # 6. Fetch MongoDB Prompt
-        logger.info(f"   [PlanPal] Fetching prompt 'PlanPal JSON Creation' from MongoDB...")
-        prompt_meta = fetch_prompt_metadata_mongo("Guided_Selling_JSON", "PlanPal Agent")
+        # 5. Fetch OfferUIDefinition from Salesforce
+        matched_product_id = match_json.get('product_id')
+        logger.info(f"   [PlanPal] Querying OfferUITheme for Product: {matched_product_id}")
         
-        fallback_prompt = (
-            "You are a JSON generation engine.\n"
-            "Return ONLY one valid JSON object.\n"
-            "Create a Salesforce guided selling UI JSON using only fields from Available Fields.\n"
-            "Rules:\n"
-            "1. Include only fields that are clearly mentioned in the user question.\n"
-            "2. Always use exact field API names from Available Fields.\n"
-            "3. For PICKLIST fields, defaultValue must match one of the exact picklistOptions.\n"
-            "4. uiElement mapping: DOUBLE, INTEGER, CURRENCY, PERCENT -> 'number'; DATE -> 'date'; BOOLEAN -> 'checkbox'; PICKLIST, MULTIPICKLIST -> 'picklist'; REFERENCE -> 'lookup'; STRING, TEXTAREA -> 'Text'\n"
-            "Output shape:\n"
-            "{\n"
-            "  \"Section\": [\n"
-            "    {\n"
-            "      \"SectionLabel\": \"Line Item Details\",\n"
-            "      \"SectionName\": \"LineItemDetails\",\n"
-            "      \"SectionSequence\": 2,\n"
-            "      \"category\": \"<Target Child Object API Name>\",\n"
-            "      \"isSectionOpen\": true,\n"
-            "      \"DataSource\": [\n"
-            "        {\n"
-            "          \"name\": \"<Field API Name>\",\n"
-            "          \"label\": \"<Field Label>\",\n"
-            "          \"uiElement\": \"<UI Element Type>\",\n"
-            "          \"isRequired\": false,\n"
-            "          \"defaultValue\": <value>\n"
-            "        }\n"
-            "      ]\n"
-            "    }\n"
-            "  ],\n"
-            "  \"EnableCustomAction\": false,\n"
-            "  \"CustomActionFlowName\": null\n"
-            "}"
+        offer_ui_query = f"""
+            SELECT crma_i_act__OfferUIDefinition__c, crma_i_act__Title__c 
+            FROM crma_i_act__OfferUITheme__c 
+            WHERE crma_i_act__Product__c = '{matched_product_id}' 
+            AND crma_i_act__UITheme__r.Name = 'Guided Selling' 
+            AND crma_i_act__IsActive__c = true 
+            LIMIT 1
+        """
+        try:
+            offer_ui_results = sf_client.sf.query(offer_ui_query)
+            if offer_ui_results.get('totalSize', 0) > 0:
+                offer_record = offer_ui_results['records'][0]
+                base_offer_definition = offer_record.get('crma_i_act__OfferUIDefinition__c', '{}')
+                offer_title = offer_record.get('crma_i_act__Title__c')
+                if not offer_title:
+                    offer_title = f'Provide line item details {match_json.get("product_name")}'
+            else:
+                logger.warning(f"⚠️ [PlanPal] No active OfferUITheme found for product {matched_product_id}. Using empty template.")
+                base_offer_definition = '{"Section": [{"SectionLabel": "Line Item Details", "SectionName": "LineItemDetails", "DataSource": []}]}'
+                offer_title = f'Provide line item details {match_json.get("product_name")}'
+        except Exception as e:
+            logger.error(f"❌ [PlanPal] Error querying OfferUITheme: {e}")
+            base_offer_definition = '{"Section": [{"SectionLabel": "Line Item Details", "SectionName": "LineItemDetails", "DataSource": []}]}'
+            offer_title = f'Provide line item details {match_json.get("product_name")}'
+
+        # 6. Extract LineItemDetails fields to keep prompt small
+        logger.info(f"   [PlanPal] Building prompt for OfferUIDefinition injection...")
+        
+        try:
+            base_offer_dict = json.loads(base_offer_definition)
+            line_item_section = next((sec for sec in base_offer_dict.get("Section", []) if sec.get("SectionName") == "LineItemDetails"), None)
+            
+            if line_item_section:
+                available_fields = [{"name": ds.get("name"), "label": ds.get("label"), "type": ds.get("uiElement")} for ds in line_item_section.get("DataSource", [])]
+            else:
+                available_fields = []
+        except Exception as e:
+            logger.error(f"❌ [PlanPal] Failed to parse base_offer_definition: {e}")
+            base_offer_dict = {"Section": [{"SectionLabel": "Line Item Details", "SectionName": "LineItemDetails", "DataSource": []}]}
+            available_fields = []
+            
+        system_prompt = (
+            "You are a data extraction engine.\n"
+            "Your task is to extract field values from the user's request based on the Available Fields provided.\n"
+            "Return ONLY a JSON dictionary where keys are the field 'name' and values are the requested values.\n"
+            "Example: If user asks 'add internet with quantity 5' and Quantity is an available field, return {\"Quantity\": 5}.\n"
+            "If no fields match, return {}."
         )
         
-        system_prompt = prompt_meta["prompt"] if prompt_meta else fallback_prompt
-        if prompt_meta:
-            logger.info("✅ [PlanPal] Successfully loaded 'PlanPal JSON Creation' prompt from MongoDB")
-        else:
-            logger.warning("⚠️ [PlanPal] Could not load prompt from MongoDB, using fallback prompt.")
-
-        user_prompt = f"User Question: \"{user_goal}\" Target Child Object: \"{child_obj}\" Available Fields: {json.dumps(available_fields)}"
+        user_prompt = f"User Question: \"{user_goal}\"\n\nAvailable Fields:\n{json.dumps(available_fields)}"
         
-        logger.info(f"   [PlanPal] Calling LLM to generate UI JSON. System prompt length: {len(system_prompt)}. User prompt length: {len(user_prompt)}.")
+        logger.info(f"   [PlanPal] Calling LLM to extract default values. System prompt length: {len(system_prompt)}. User prompt length: {len(user_prompt)}.")
         
         # 7. Generate UI JSON
         #ps commented on may 13
@@ -288,13 +258,23 @@ async def process_line_item_node(state: PlanPalState) -> PlanPalState:
         
         try:
             clean_json = json_response.replace('```json', '').replace('```', '').strip()
-            # Fix common issue where local model closes Section array with } instead of ]
-            clean_json = re.sub(r'\}\s*\},', r'}],', clean_json)
-            generated_json = json.loads(clean_json)
+            updates = json.loads(clean_json)
+            
+            # Inject updates into base_offer_dict
+            if isinstance(updates, dict) and "Section" in base_offer_dict:
+                for sec in base_offer_dict["Section"]:
+                    if sec.get("SectionName") == "LineItemDetails":
+                        for ds in sec.get("DataSource", []):
+                            field_name = ds.get("name")
+                            if field_name in updates:
+                                ds["defaultValue"] = updates[field_name]
+                                
+            generated_json = base_offer_dict
+            
         except json.JSONDecodeError as e:
             logger.error(f"❌ [PlanPal] Failed to parse generated JSON: {e}")
-            state["error"] = "Failed to generate valid UI configuration."
-            return state
+            # If LLM failed, just use the base definition without defaults
+            generated_json = base_offer_dict
 
         # Remove Product2Id from DataSource arrays
         if "Section" in generated_json and isinstance(generated_json["Section"], list):
@@ -312,7 +292,8 @@ async def process_line_item_node(state: PlanPalState) -> PlanPalState:
             "productId": match_json.get('product_id'),
             "priceBookEntryId": match_json.get('pricebook_entry_id'),
             "family": match_json.get('family'),
-            "Title" :'Provide line item details '
+            # "Title": offer_title
+            "Title": ""
         }
 
         

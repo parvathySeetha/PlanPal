@@ -5,7 +5,7 @@ import PACEPAL_LOGO from '@salesforce/resourceUrl/pacepal';
 
 export default class PacepalChatbot extends NavigationMixin(LightningElement) {
 
-    @api websocketUrl = 'wss://66fa-2401-4900-1cde-4d2a-c99-fae1-ac5a-4c98.ngrok-free.app/ws/chat';
+    @api websocketUrl = 'wss://aa17-2401-4900-1cde-2ecc-1d73-882-983e-8088.ngrok-free.app/ws/chat';
     @api recordId;
     @track isChatOpen = false;
     @track currentMessage = '';
@@ -24,6 +24,10 @@ export default class PacepalChatbot extends NavigationMixin(LightningElement) {
     //ps
     @track isGuidedSellingOpen = false;
     @track guidedSellingData = null;
+
+    @track productDetails = null;
+    @track adsalescustomData = null;
+    @track chatbotContext = null;
 
     get isGuidedSellingPanelOpen() {
         return this.isGuidedSellingOpen;
@@ -46,6 +50,7 @@ export default class PacepalChatbot extends NavigationMixin(LightningElement) {
     // get isSidebarOpen() {
     //     return this.isChatOpen && this.showPopup && (this.isPopupListV2Open || this.isReconCanvasOpen);
     // }
+
     //ps
     get isSidebarOpen() {
         return this.isChatOpen && this.showPopup &&
@@ -53,9 +58,18 @@ export default class PacepalChatbot extends NavigationMixin(LightningElement) {
     }
     //ps end
 
+    // get isDefaultPopupOpen() {
+    //     return this.showPopup && !this.isPopupListV2Open && !this.isReconCanvasOpen;
+    // }
+
+    //ps
     get isDefaultPopupOpen() {
-        return this.showPopup && !this.isPopupListV2Open && !this.isReconCanvasOpen;
+        return this.showPopup &&
+            !this.isPopupListV2Open &&
+            !this.isReconCanvasOpen &&
+            !this.isGuidedSellingOpen;
     }
+    //ps end
 
     get chatWindowClass() {
         return this.isSidebarOpen ? 'chat-window chat-window--extended' : 'chat-window';
@@ -102,23 +116,6 @@ export default class PacepalChatbot extends NavigationMixin(LightningElement) {
         }
     }
 
-
-    // toggleChat() {
-    //     this.isChatOpen = !this.isChatOpen;
-
-    //     // Reset modal state when chat is closed
-    //     if (!this.isChatOpen) {
-    //         this.isQuoteModalOpen = false;
-    //     }
-
-    //     // If opening the chat, ensure messages are displayed correctly
-    //     if (this.isChatOpen) {
-    //         setTimeout(() => {
-    //             this.updateMessageDisplay();
-
-    //         }, 0);
-    //     }
-    // }
 
     generateSessionId() {
         // Use crypto.randomUUID if available, otherwise fallback
@@ -203,42 +200,20 @@ export default class PacepalChatbot extends NavigationMixin(LightningElement) {
 
             if (data.type === 'status') {
                 this.addSystemMessage(data.message);
-                // } else if (data.type === 'response') {
-                //     this.isSending = false;
-                //     if (data.success) {
-                //         // Check for generated email content FIRST
-                //         if (data.generated_email_content) {
-                //             this.addEmailMessage(data.generated_email_content);
-                //         }
 
-                //         // Check for structured reconciliation results
-                //         if (data.structured_summary) {
-                //             this.addReconciliationMessage(data.response, data.structured_summary);
-                //         } else {
-                //             this.addAgentMessage(data.response, data.created_records, data.salesforce_data);
-                //         }
-                //     } else {
-                //         this.addErrorMessage(`Error: ${data.error || data.response}`);
-                //     }
-                // } 
-
-                //ps
-            } else if (data.type === 'response') {
+            }
+            
+            //ps start
+            else if (data.type === 'response') {
                 this.isSending = false;
-
                 if (data.success) {
                     if (data.generated_email_content) {
                         this.addEmailMessage(data.generated_email_content);
                     }
-
-                    if (data.structured_summary?.DUMMY_OfferUIDefinition__c) {
+                    if (data.structured_summary?.OfferUIDefinition) {
                         this.addGuidedSellingMessage(data);
-                    } else if (
-                        data.structured_summary &&
-                        data.structured_summary.totalRevenue !== undefined &&
-                        data.structured_summary.variance !== undefined &&
-                        data.structured_summary.totalImpressions !== undefined
-                    ) {
+                    } else if (data.structured_summary && data.structured_summary.totalRevenue !== undefined &&
+                        data.structured_summary.variance !== undefined && data.structured_summary.totalImpressions !== undefined){
                         this.addReconciliationMessage(data.response, data.structured_summary);
                     } else {
                         this.addAgentMessage(data.response, data.created_records, data.salesforce_data);
@@ -280,12 +255,6 @@ export default class PacepalChatbot extends NavigationMixin(LightningElement) {
                 this.addErrorMessage(`Error: ${data.message}`);
             }
 
-            //ps
-            if (parsedMessage.messageType === 'guided-selling' || parsedMessage.contentType === 'guided-selling') {
-                this.processGuidedSellingMessage(parsedMessage);
-                return;
-            }
-            //ps end
 
         } catch (error) {
             console.error('Error parsing message:', error);
@@ -295,35 +264,92 @@ export default class PacepalChatbot extends NavigationMixin(LightningElement) {
     }
 
 
+     // ps start
     addGuidedSellingMessage(data) {
         const summary = data.structured_summary || {};
-        let offerUiDefinition = null;
+        let offerUiDefinition;
 
         try {
-            offerUiDefinition = JSON.parse(summary.DUMMY_OfferUIDefinition__c);
+            offerUiDefinition = JSON.parse(summary.OfferUIDefinition);
         } catch (e) {
             console.error('Invalid Offer UI JSON:', e);
             this.addErrorMessage('Offer UI definition JSON is invalid.');
             return;
         }
 
+        const title = summary.Title || 'Add Product : ';
+        //const title  = 'Add Product : ';
+
         const msg = {
             id: Date.now(),
-            type: 'guided_selling',
+            type: 'agent',
             class: 'message message-agent',
-            content: data.response || 'Ready to configure product.',
-            isGuidedSelling: true,
-            guidedSellingData: {
-                title: summary.DUMMY_Title__c || 'Product Configuration',
-                offerUiDefinition: offerUiDefinition
-            },
+            content: this.formatMessage(data.response || 'Ready to configure product.'),
+            isText: true,
             timestamp: new Date().toLocaleTimeString()
         };
 
-        this.messages.push(msg);
+        this.messages = [...this.messages, msg];
+
+
+        this.productDetails = {
+            productId: summary.productId,
+            productName: summary.productName,
+            name: summary.productName,
+            family: summary.family,
+            pricebookEntryId: summary.priceBookEntryId
+        };
+
+
+        this.adsalescustomData = {};
+        this.adsalescustomData[this.productDetails.family] = offerUiDefinition;
+        this.adsalescustomData['CommonTitle'] = title;
+        this.adsalescustomData['CustomActionFlowName'] = offerUiDefinition.CustomActionFlowName || null;
+
+        this.chatbotContext = true;
+
+        // Open left popup
+        this.guidedSellingData = {
+            title: title,
+            offerUiDefinition: offerUiDefinition
+        };
+
+        this.isGuidedSellingOpen = true;
+        this.showPopup = true;
+        this.popupMode = 'guidedSelling';
+
         this.scrollToBottom();
+
+        console.log('productDetails:', JSON.stringify(this.productDetails));
+        console.log('adsalescustomData:', JSON.stringify(this.adsalescustomData));
+        console.log('chatbotContext:', JSON.stringify(this.chatbotContext));
     }
 
+    //ps end
+
+    handleaddproductInvoke(event) {
+        console.log('addproductinvoke event:', JSON.stringify(event.detail));
+    }
+
+    handleFinishAddFlow(event) {
+        console.log('finish event:', JSON.stringify(event.detail));
+
+        this.isGuidedSellingOpen = false;
+        this.showPopup = false;
+        this.popupMode = 'default';
+
+        this.productDetails = null;
+        this.adsalescustomData = null;
+        this.chatbotContext = null;
+    }
+
+    handleLineItemSave(event) {
+        console.log('line item save event:', JSON.stringify(event.detail));
+
+        this.addSystemMessage('Line item saved successfully.');
+    }
+
+    //ps end
 
     disableAllInteractions() {
         // Create a new array to trigger reactivity
@@ -422,8 +448,6 @@ export default class PacepalChatbot extends NavigationMixin(LightningElement) {
             }
         });
     }
-
-
 
     addReconciliationMessage(text, summary) {
         const msgId = Date.now();
@@ -576,6 +600,7 @@ export default class PacepalChatbot extends NavigationMixin(LightningElement) {
 
         this.scrollToBottom();
     }
+
     addConfirmationMessage(data) {
         console.log('✅ Adding Confirmation Message:', JSON.stringify(data));
         const msgId = Date.now();
@@ -608,8 +633,6 @@ export default class PacepalChatbot extends NavigationMixin(LightningElement) {
         this.sendCustomMessage(value, value);
     }
 
-
-
     handleSaveTemplate(event) {
         const msgId = event.target.dataset.id;
         const msgIndex = this.messages.findIndex(m => m.id == msgId);
@@ -623,6 +646,7 @@ export default class PacepalChatbot extends NavigationMixin(LightningElement) {
         // Send a message acting as the user asking to save
         this.sendCustomMessage("Save this email template to Brevo.", "Saving template...");
     }
+
     async enrichRelatedRecords(msgId, records) {
         const processedRecords = [];
 
@@ -662,19 +686,6 @@ export default class PacepalChatbot extends NavigationMixin(LightningElement) {
         this.scrollToBottom();
     }
 
-    // --- Review Proposal Interactions (Inline) ---
-
-    // handleToggleEdit(event) {
-    //     const msgId = event.target.dataset.id;
-    //     const msgIndex = this.messages.findIndex(m => m.id == msgId);
-    //     if (msgIndex !== -1) {
-    //         // Clone to trigger reactivity
-    //         const newMsg = { ...this.messages[msgIndex] };
-    //         newMsg.isEditing = !newMsg.isEditing; // Toggle
-    //         this.messages[msgIndex] = newMsg;
-    //     }
-    // }
-
     handleFieldChange(event) {
         const msgId = event.target.dataset.msgid;
         const fieldName = event.target.dataset.name;
@@ -691,29 +702,7 @@ export default class PacepalChatbot extends NavigationMixin(LightningElement) {
         }
     }
 
-    // handleProceed(event) {
-    //     const msgId = event.target.dataset.id;
-    //     const msg = this.messages.find(m => m.id == msgId);
-    //     if (!msg) return;
-
-    //     // Construct confirmation logic
-    //     let confirmMsg = `Proceed with creating ${msg.objectName}. `;
-    //     const updates = [];
-    //     msg.fields.forEach(field => {
-    //         if (field.value) updates.push(`${field.name}='${field.value}'`);
-    //     });
-    //     confirmMsg += `Details: ${updates.join(', ')}.`;
-
-    //     this.sendCustomMessage(confirmMsg);
-
-    //     if (msg.isEditing) {
-    //         const msgIndex = this.messages.findIndex(m => m.id == msgId);
-    //         this.messages[msgIndex] = { ...msg, isEditing: false };
-    //     }
-    // }
-
     // --- Helpers ---
-
     async enrichMessageWithLinks(msgId, text, recordsMap) {
         // Find message
         let msgIndex = this.messages.findIndex(m => m.id === msgId);
@@ -783,18 +772,6 @@ export default class PacepalChatbot extends NavigationMixin(LightningElement) {
         }, 100);
     }
 
-    // --- Review Mode Handlers ---
-
-    // handleToggleEdit(event) {
-    //     const msgId = event.target.dataset.id;
-    //     const msgIndex = this.messages.findIndex(m => m.id == msgId);
-    //     if (msgIndex !== -1) {
-    //         // Clone to trigger reactivity
-    //         const newMsg = { ...this.messages[msgIndex] };
-    //         newMsg.isEditing = !newMsg.isEditing;
-    //         this.messages[msgIndex] = newMsg;
-    //     }
-    // }
     handleToggleEdit(event) {
         const msgId = event.target.dataset.id;
         const msgIndex = this.messages.findIndex(m => m.id == msgId);
@@ -897,39 +874,6 @@ export default class PacepalChatbot extends NavigationMixin(LightningElement) {
         }
     }
 
-    // handleProceed(event) {
-    //     const msgId = event.target.dataset.id;
-    //     const msg = this.messages.find(m => m.id == msgId);
-    //     if (!msg) return;
-
-    //     // Construct confirmation logic
-    //     let confirmMsg = `Proceed with creating ${msg.objectName}. `;
-    //     const updates = [];
-
-    //     msg.fields.forEach(field => {
-    //         // Only add if value exists. For custom fields, Name must also exist.
-    //         if (field.value && field.name) {
-    //             updates.push(`${field.name}='${field.value}'`);
-    //         }
-    //     });
-
-    //     confirmMsg += `Details: ${updates.join(', ')}.`;
-
-    //     // Pass related records context if available
-    //     if (msg.relatedRecords && msg.relatedRecords.length > 0) {
-    //         const ids = msg.relatedRecords.map(r => r.id).join(', ');
-    //         // Explicitly key off "CampaignMember" so backend rule triggers
-    //         confirmMsg += ` AND Create CampaignMember records for the following ${msg.relatedRecords.length} found records: [${ids}]`;
-    //     }
-
-    //     this.sendCustomMessage(confirmMsg, 'Proceeding with the proposed details...');
-
-    //     // Switch back to Read Only
-    //     if (msg.isEditing) {
-    //         const msgIndex = this.messages.findIndex(m => m.id == msgId);
-    //         this.messages[msgIndex] = { ...msg, isEditing: false };
-    //     }
-    // }
     handleProceed(event) {
         const msgId = event.target.dataset.id;
         const msgIndex = this.messages.findIndex(m => m.id == msgId);
@@ -987,6 +931,7 @@ export default class PacepalChatbot extends NavigationMixin(LightningElement) {
         // Send a message acting as the user asking to save
         this.sendCustomMessage("Save this email template to Brevo.", "Saving template...");
     }
+
     handleMessageChange(event) { this.currentMessage = event.target.value; }
 
     handleKeyPress(event) {
@@ -1145,7 +1090,6 @@ export default class PacepalChatbot extends NavigationMixin(LightningElement) {
     }
 
     // --- NEW: Pop-up List View 2 Logic ---
-
     addPopupListV2Message(data) {
         const msgId = Date.now();
         const msg = {
@@ -1181,7 +1125,6 @@ export default class PacepalChatbot extends NavigationMixin(LightningElement) {
     }
 
     // --- NEW: Pop-up List View Logic ---
-
     addPopupListMessage(data) {
         const msgId = Date.now();
         const msg = {
@@ -1307,17 +1250,17 @@ export default class PacepalChatbot extends NavigationMixin(LightningElement) {
     //     this.v2OrderId = '';
     // }
 
-    //ps
+    //ps start
     closePopup() {
-    this.showPopup = false;
-    this.isGuidedSellingOpen = false;
-    this.popupMode = 'default';
-    this.reconCanvasData = null;
-    this.guidedSellingData = null;
-    this.popupSections = [];
-    this.popupHeader = '';
-    this.v2OrderId = '';
-}
+        this.showPopup = false;
+        this.isGuidedSellingOpen = false;
+        this.popupMode = 'default';
+        this.reconCanvasData = null;
+        this.guidedSellingData = null;
+        this.popupSections = [];
+        this.popupHeader = '';
+        this.v2OrderId = '';
+    }
     //ps end
 
     showToast(title, message, variant) {
@@ -1329,13 +1272,7 @@ export default class PacepalChatbot extends NavigationMixin(LightningElement) {
         this.disconnectWebSocket();
     }
 
-
-
-
-
-
-
-    //ps
+    //ps start
     handleOpenGuidedSelling(message) {
         console.log('Opening Guided Selling Panel:', message);
 
@@ -1349,12 +1286,11 @@ export default class PacepalChatbot extends NavigationMixin(LightningElement) {
         }
     }
 
-    /**
-     * Close Guided Selling panel
-     */
     closeGuidedSelling() {
         this.isGuidedSellingOpen = false;
         this.guidedSellingData = null;
+        this.showPopup = false;
+        this.popupMode = 'default';
     }
 
     formatGuidedSellingData(apiResponse) {
@@ -1385,7 +1321,6 @@ export default class PacepalChatbot extends NavigationMixin(LightningElement) {
         };
     }
 
-
     processGuidedSellingMessage(chatbotResponse) {
         console.log('Processing Guided Selling Message:', chatbotResponse);
 
@@ -1406,10 +1341,7 @@ export default class PacepalChatbot extends NavigationMixin(LightningElement) {
         this.messages.push(msg);
         this.scrollToBottom();
     }
-
-
-
-
+    //ps end
 
 
 }
